@@ -17,11 +17,11 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void createUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()){
-            transaction = session.beginTransaction();
+            session.beginTransaction();
             session.createSQLQuery("CREATE TABLE IF NOT EXISTS user " +
                     "(id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT," +
                     " name VARCHAR(50), lastName VARCHAR(50), age INT (5));").executeUpdate();
-            transaction.commit();
+            session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
         }
@@ -42,9 +42,9 @@ public class UserDaoHibernateImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         try (Session session = Util.getSessionFactory().openSession()){
             User user = new User(name, lastName, age);
-            transaction = session.beginTransaction();
+            session.beginTransaction();
             session.save(user);
-            transaction.commit();
+            session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
         }
